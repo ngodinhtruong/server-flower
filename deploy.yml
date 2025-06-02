@@ -1,0 +1,34 @@
+name: Deploy to GCE
+
+on:
+  push:
+    branches:
+      - main  # Thay branch nếu bạn dùng branch khác
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Copy code to VM via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.GCE_HOST }}
+          username: ${{ secrets.GCE_USER }}
+          key: ${{ secrets.GCE_SSH_KEY }}
+          source: "."
+          target: "~/NCKH"  
+
+      - name: Restart app on VM
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.GCE_HOST }}
+          username: ${{ secrets.GCE_USER }}
+          key: ${{ secrets.GCE_SSH_KEY }}
+          script: |
+            cd ~/NCKH
+            # Lệnh restart app bạn dùng, ví dụ:
+            pm2 restart app.js || npm start
