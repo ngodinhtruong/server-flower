@@ -25,4 +25,4 @@ jobs:
         run: |
           gcloud compute ssh server-fl \
             --zone us-central1-c \
-            --command "cd NCKH/server-flower && git fetch origin main && git reset --hard origin/main && git pull origin main"
+            --command "cd /home/ngodinh2339/NCKH/server-flower && git fetch origin main && git reset --hard origin/main && git pull origin main"
