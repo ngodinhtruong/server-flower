@@ -3,7 +3,7 @@ name: Deploy to GCE
 on:
   push:
     branches:
-      - main  
+      - main
 
 jobs:
   deploy:
@@ -20,5 +20,16 @@ jobs:
           username: ${{ secrets.GCE_USER }}
           key: ${{ secrets.GCE_SSH_KEY }}
           source: "."
-          target: "~/NCKH"  
+          target: "~/NCKH"
 
+      - name: Pull latest code on VM (update only)
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.GCE_HOST }}
+          username: ${{ secrets.GCE_USER }}
+          key: ${{ secrets.GCE_SSH_KEY }}
+          script: |
+            cd ~/NCKH
+            git reset --hard
+            git clean -fd
+            git pull origin main
