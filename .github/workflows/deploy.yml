@@ -23,6 +23,6 @@ jobs:
 
       - name: SSH and Update Code
         run: |
-          gcloud compute ssh server-fl \
+          gcloud compute ssh ngodinh2339@34.57.240.203 \
             --zone us-central1-c \
             --command "cd /home/ngodinh2339/NCKH/server-flower && git fetch origin main && git reset --hard origin/main && git pull origin main"
